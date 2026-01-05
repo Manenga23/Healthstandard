@@ -1,0 +1,10 @@
+{
+  "name": "ohsc-compliance-autopack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OHSC compliance auto-generated ZIP (Netlify Functions demo)",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "jszip": "^3.10.1"
+  }
+}

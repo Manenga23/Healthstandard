@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Start compliance — OHSC Auto-Pack</title>
+  <link rel="stylesheet" href="/assets/style.css"/>
+  
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">OHSC Compliance Auto-Pack</div>
+      <div class="menu">
+        <a href="/">Home</a>
+        <a href="/how-it-works.html">How it works</a>
+        <a href="/master-pack.html">Master pack</a>
+        <a href="/start-compliance.html" class="badge">Start</a>
+      </div>
+    </div>
+    
+<h2>Start compliance</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">Option 1: Netlify Form (stores submissions)</h3>
+  <p class="small">This submits to Netlify Forms and redirects to Thank You. Use it if you want to review submissions first.</p>
+
+  <form name="ohsc-master" method="POST" data-netlify="true" action="/thank-you.html">
+    <input type="hidden" name="form-name" value="ohsc-master"/>
+    <div class="row">
+      <div class="col6">
+        <label>Practice name</label>
+        <input name="practice_name" required/>
+      </div>
+      <div class="col6">
+        <label>BHF practice number</label>
+        <input name="bhf_practice_number" required/>
+      </div>
+
+      <div class="col6">
+        <label>Physical address</label>
+        <textarea name="physical_address" rows="3" required></textarea>
+      </div>
+      <div class="col6">
+        <label>Practice email</label>
+        <input type="email" name="practice_email" required/>
+      </div>
+
+      <div class="col6">
+        <label>Responsible practitioner</label>
+        <input name="practitioner_name" required/>
+      </div>
+      <div class="col6">
+        <label>HPCSA number</label>
+        <input name="hpcsa_number" required/>
+      </div>
+
+      <div class="col6">
+        <label>Record system</label>
+        <select name="record_system" required>
+          <option>Paper</option>
+          <option>Electronic</option>
+          <option>Both</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Dispensing status</label>
+        <select name="dispensing_status" required>
+          <option>Dispensing practice</option>
+          <option>Emergency meds only</option>
+          <option>No dispensing</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Treatment room available?</label>
+        <select name="treatment_room" required>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Schedule 5/6 handled?</label>
+        <select name="schedule_56" required>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Has staff?</label>
+        <select name="has_staff" required>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Building type</label>
+        <select name="building_type" required>
+          <option>Single-storey</option>
+          <option>Multi-storey</option>
+        </select>
+      </div>
+
+      <div class="col6">
+        <label>Signature name (typed)</label>
+        <input name="signature_name" required/>
+      </div>
+      <div class="col6">
+        <label>Signature date</label>
+        <input type="date" name="signature_date" required/>
+      </div>
+    </div>
+
+    <div class="btnRow">
+      <button class="btn" type="submit">Submit (store submission)</button>
+    </div>
+  </form>
+</div>
+
+<div class="card" style="margin-top:14px">
+  <h3 style="margin-top:0">Option 2: Instant ZIP generator (demo-ready)</h3>
+  <p class="small">This calls a Netlify Function to generate and download a ZIP immediately (placeholder documents).</p>
+
+  <form id="ohscPreviewForm">
+    <div class="row">
+      <div class="col6"><label>Practice name</label><input name="practice_name" required/></div>
+      <div class="col6"><label>BHF practice number</label><input name="bhf_practice_number" required/></div>
+      <div class="col6"><label>Physical address</label><textarea name="physical_address" rows="3" required></textarea></div>
+      <div class="col6"><label>Practice email</label><input type="email" name="practice_email" required/></div>
+      <div class="col6"><label>Responsible practitioner</label><input name="practitioner_name" required/></div>
+      <div class="col6"><label>HPCSA number</label><input name="hpcsa_number" required/></div>
+      <div class="col6"><label>Record system</label>
+        <select name="record_system" required><option>Paper</option><option>Electronic</option><option>Both</option></select>
+      </div>
+      <div class="col6"><label>Dispensing status</label>
+        <select name="dispensing_status" required><option>Dispensing practice</option><option>Emergency meds only</option><option>No dispensing</option></select>
+      </div>
+      <div class="col6"><label>Treatment room?</label>
+        <select name="treatment_room" required><option>Yes</option><option>No</option></select>
+      </div>
+      <div class="col6"><label>Schedule 5/6?</label>
+        <select name="schedule_56" required><option>Yes</option><option>No</option></select>
+      </div>
+      <div class="col6"><label>Has staff?</label>
+        <select name="has_staff" required><option>Yes</option><option>No</option></select>
+      </div>
+      <div class="col6"><label>Building type</label>
+        <select name="building_type" required><option>Single-storey</option><option>Multi-storey</option></select>
+      </div>
+      <div class="col6"><label>Signature name</label><input name="signature_name" required/></div>
+      <div class="col6"><label>Signature date</label><input type="date" name="signature_date" required/></div>
+    </div>
+
+    <div class="btnRow">
+      <button id="btnGenerate" class="btn" type="submit">Generate ZIP now</button>
+      <a id="downloadLink" class="btn secondary" style="display:none" href="#">Download ZIP</a>
+    </div>
+    <div id="out" class="small" style="margin-top:10px;color:var(--muted)"></div>
+  </form>
+</div>
+
+    <div class="footer">
+      <div class="small">
+        Disclaimer: This platform assists with documentation aligned to OHSC norms & standards. Final inspection outcomes remain at the discretion of the relevant authorities.
+      </div>
+    </div>
+  </div>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
