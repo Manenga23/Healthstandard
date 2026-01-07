@@ -145,6 +145,14 @@ function registerPdf(title, headers, data){
 exports.handler = async (event) => {
   try{
     const data = JSON.parse(event.body || "{}");
+    const selectedPack = String(data.selected_pack || "MASTER").toUpperCase(); // PACK1..PACK6 or MASTER
+    const mode = selectedPack === "MASTER" ? "MASTER" : "SINGLE";
+
+    function want(packCode){
+      if(mode === "MASTER") return true;
+      return selectedPack === packCode;
+    }
+
     // Minimal required fields
     const required = ["practice_name","practice_number","physical_address","postal_address","contact_number","operating_hours","after_hours","practitioner_name","hpcsa_number","practice_type","records","signature_name","building_type","has_staff","schedule_56"];
     for(const k of required){
@@ -164,6 +172,7 @@ exports.handler = async (event) => {
 
 
     // Pack 1 Governance (DETAILED)
+    if(want("PACK1")){
     docs.push({folder:"01_GOVERNANCE", file:`01_Practice_Profile_2026.pdf`, title:"Practice Profile (Detailed)", type:"text", lines:[
       "1. PRACTICE OVERVIEW",
       "This document describes the practice profile for inspection and governance purposes.",
@@ -326,8 +335,11 @@ exports.handler = async (event) => {
       "Signed (typed): {{signature_name}}",
       "Date: {{signature_date}}",
     ] });
+    }
+
 
     // Pack 2 IPC (DETAILED)
+    if(want("PACK2")){
     docs.push({folder:"02_IPC", file:`01_IPC_Policy_2026.pdf`, title:"IPC Policy (Detailed)", type:"text", lines:[
       "PURPOSE",
       "To prevent and control infections, protecting patients, staff and visitors.",
@@ -463,8 +475,11 @@ exports.handler = async (event) => {
     docs.push({folder:"02_IPC", file:`08_Sharps_Log_2026.pdf`, title:"Sharps Container Monitoring Log", type:"register", headers:["Date", "Location", "Container Number", "Fill Level", "Replaced (Y/N)", "Signature"] });
     docs.push({folder:"02_IPC", file:`09_Exposure_Register_2026.pdf`, title:"Occupational Exposure Register", type:"register", headers:["Date", "Staff Member", "Type of Exposure", "Immediate Action", "Follow-up", "Signature"] });
     docs.push({folder:"02_IPC", file:`10_IPC_Training_Register_2026.pdf`, title:"IPC Training Register", type:"register", headers:["Staff Name", "Role", "Training Topic", "Date", "Trainer", "Signature"] });
+    }
+
 
     // Pack 3 Medicines & Dispensing (DETAILED)
+    if(want("PACK3")){
     if(isDispensing || isEmergencyMeds){
     docs.push({folder:"03_MEDICINES", file:`01_Medicines_Management_Policy_2026.pdf`, title:"Medicines Management Policy (Detailed)", type:"text", lines:[
       "PURPOSE",
@@ -578,8 +593,11 @@ exports.handler = async (event) => {
     ] });
     docs.push({folder:"03_MEDICINES", file:`08_Schedule_5_6_Register_2026.pdf`, title:"Schedule 5 & 6 Register", type:"register", headers:["Date", "Medicine", "Patient", "Qty", "Balance", "Prescriber", "Signature"] });
     }
+    }
+
 
     // Pack 4 HR & Training (DETAILED)
+    if(want("PACK4")){
     if(hasStaff){
     docs.push({folder:"04_HR", file:`01_HR_Policy_2026.pdf`, title:"Human Resources Policy (Detailed)", type:"text", lines:[
       "PURPOSE",
@@ -672,8 +690,11 @@ exports.handler = async (event) => {
     docs.push({folder:"04_HR", file:`06_Training_Register_2026.pdf`, title:"Training & CPD Register", type:"register", headers:["Staff Name", "Training Topic", "Date", "Provider", "CPD Points", "Signature"] });
     docs.push({folder:"04_HR", file:`07_Induction_Checklist_2026.pdf`, title:"Staff Induction Checklist", type:"register", headers:["Staff Name", "Induction Item", "Completed (Y/N)", "Date", "Signature"] });
     }
+    }
+
 
     // Pack 5 Safety & Emergency (DETAILED)
+    if(want("PACK5")){
     docs.push({folder:"05_SAFETY", file:`01_Fire_Evacuation_Policy_2026.pdf`, title:"Fire & Evacuation Policy (Detailed)", type:"text", lines:[
       "PURPOSE",
       "To prevent fire risks and ensure safe, orderly evacuation for patients, staff and visitors.",
@@ -774,6 +795,147 @@ exports.handler = async (event) => {
     docs.push({folder:"05_SAFETY", file:`05_Fire_Equipment_Register_2026.pdf`, title:"Fire Equipment Register", type:"register", headers:["Date", "Equipment Type", "Location", "Condition", "Action Taken", "Signature"] });
     docs.push({folder:"05_SAFETY", file:`06_Emergency_Equipment_Checklist_2026.pdf`, title:"Emergency Equipment Checklist", type:"register", headers:["Date", "Equipment Item", "Available (Y/N)", "Condition", "Checked By", "Signature"] });
     docs.push({folder:"05_SAFETY", file:`07_Drill_Register_2026.pdf`, title:"Evacuation & Fire Drill Register", type:"register", headers:["Date", "Type of Drill", "Participants", "Outcome", "Corrective Action", "Signature"] });
+    }
+    // Pack 6 Advanced SOPs (DETAILED)
+    if(want("PACK6")){
+    docs.push({folder:"06_ADVANCED", file:`01_Patient_ID_SOP_2026.pdf`, title:"Patient Identification & Verification SOP", type:"text", lines:[
+      "PURPOSE",
+      "To ensure correct patient identification at every encounter and reduce errors.",
+      "---",
+      "SCOPE",
+      "Applies to reception, clinical staff, telemedicine, and any documentation/dispensing.",
+      "---",
+      "RESPONSIBILITIES",
+      "- Reception/Admin: verify identifiers and update demographics.",
+      "- Clinician: confirm identity before assessment, procedures, prescribing/dispensing.",
+      "- All staff: report near-misses related to identification.",
+      "---",
+      "PROCEDURE (STEP-BY-STEP)",
+      "1. Ask the patient to state full name and date of birth (or ID number) and confirm contact number.",
+      "2. If returning patient, confirm address and emergency contact; update changes immediately.",
+      "3. For telemedicine: confirm at least two identifiers before discussing clinical details.",
+      "4. Before prescribing/dispensing or procedures: re-confirm identifiers and allergies where possible.",
+      "5. If identity cannot be confirmed: pause non-urgent care, escalate to practitioner, and document.",
+      "---",
+      "RECORDS / EVIDENCE",
+      "- Patient registration fields in electronic/paper file.",
+      "- Consent forms where used.",
+      "- Incident/near-miss register for ID errors.",
+      "---",
+      "MONITORING, AUDIT & REVIEW",
+      "- Quarterly spot-check of 10 random files for completeness of identifiers.",
+    ] });
+    docs.push({folder:"06_ADVANCED", file:`02_Referral_Continuity_SOP_2026.pdf`, title:"Referral & Continuity of Care SOP", type:"text", lines:[
+      "PURPOSE",
+      "To ensure timely referral, feedback tracking, and continuity of care.",
+      "---",
+      "SCOPE",
+      "Applies to referrals to hospitals, specialists, allied health and diagnostics.",
+      "---",
+      "RESPONSIBILITIES",
+      "- Clinician: decide referral, provide referral letter, document plan.",
+      "- Admin: assist booking/follow-up where requested and file feedback.",
+      "---",
+      "PROCEDURE (STEP-BY-STEP)",
+      "1. Identify need for referral and discuss with patient (reason, urgency, options).",
+      "2. Complete referral note/letter including summary, findings, meds/allergies, urgency, contact details.",
+      "3. Provide patient with instructions and red flags; document advice.",
+      "4. Track referral outcome: file feedback report and update patient record.",
+      "5. If no feedback within expected time, follow-up where appropriate and document.",
+      "---",
+      "RECORDS / EVIDENCE",
+      "- Referral letters/requests.",
+      "- Feedback reports.",
+      "- Follow-up notes.",
+      "---",
+      "MONITORING, AUDIT & REVIEW",
+      "- Quarterly review of referral tracking for completeness.",
+    ] });
+    docs.push({folder:"06_ADVANCED", file:`03_Prescription_Handling_SOP_2026.pdf`, title:"Prescription Handling & Documentation SOP", type:"text", lines:[
+      "PURPOSE",
+      "To standardise safe prescribing documentation and reduce prescription errors.",
+      "---",
+      "SCOPE",
+      "Applies to all prescriptions and repeats issued by the practice.",
+      "---",
+      "RESPONSIBILITIES",
+      "- Clinician: accurate prescription and documentation.",
+      "- Dispensing staff (if any): verify and query unclear items.",
+      "---",
+      "PROCEDURE (STEP-BY-STEP)",
+      "1. Confirm patient identifiers and relevant history (allergies, pregnancy status, interactions).",
+      "2. Select correct medicine, strength, dose, frequency, duration and quantity.",
+      "3. Write/issue prescription clearly; avoid ambiguous abbreviations.",
+      "4. Document indication, counselling and follow-up plan in the clinical record.",
+      "5. Manage repeats with review dates; avoid indefinite repeats without review.",
+      "6. If an error is detected: correct promptly, inform patient if needed, document and log incident/near miss.",
+      "---",
+      "RECORDS / EVIDENCE",
+      "- Prescription copies/entries.",
+      "- Clinical notes.",
+      "- Incident/near-miss log.",
+      "---",
+      "MONITORING, AUDIT & REVIEW",
+      "- Quarterly audit of 10 prescriptions for completeness and legibility.",
+    ] });
+    docs.push({folder:"06_ADVANCED", file:`04_Loadshedding_PowerFailure_SOP_2026.pdf`, title:"Power Failure & Load Shedding SOP", type:"text", lines:[
+      "PURPOSE",
+      "To maintain patient safety and continuity during power outages.",
+      "---",
+      "SCOPE",
+      "Applies to all staff and all outages (planned/unplanned).",
+      "---",
+      "RESPONSIBILITIES",
+      "- Manager: readiness, backups, communication.",
+      "- All staff: implement downtime workflow.",
+      "---",
+      "PROCEDURE (STEP-BY-STEP)",
+      "1. Maintain backup lighting/charging options and printed downtime forms.",
+      "2. During outage: keep patients safe, continue urgent care, and reschedule non-urgent services if needed.",
+      "3. Protect medicines: keep fridge closed; record outage duration; quarantine if temperature integrity uncertain.",
+      "4. Maintain confidentiality during manual processing; secure papers.",
+      "5. After power returns: capture downtime records into the main system; review any incidents.",
+      "---",
+      "RECORDS / EVIDENCE",
+      "- Downtime forms.",
+      "- Fridge temp log/outage note.",
+      "- Incident log if applicable.",
+      "---",
+      "MONITORING, AUDIT & REVIEW",
+      "- Annual drill/review of downtime readiness.",
+    ] });
+    docs.push({folder:"06_ADVANCED", file:`05_Telemedicine_Workflow_Privacy_SOP_2026.pdf`, title:"Telemedicine Workflow & Privacy SOP", type:"text", lines:[
+      "PURPOSE",
+      "To provide safe telemedicine consultations with privacy and proper documentation.",
+      "---",
+      "SCOPE",
+      "Applies when the practice offers telemedicine (e.g., myCG).",
+      "---",
+      "RESPONSIBILITIES",
+      "- Clinician: clinical decision-making, consent, documentation.",
+      "- Admin: booking support and patient instructions.",
+      "---",
+      "PROCEDURE (STEP-BY-STEP)",
+      "1. Confirm patient identity using at least two identifiers.",
+      "2. Obtain consent for telemedicine and explain limitations; document consent.",
+      "3. Ensure the patient is in a private setting; clinician uses a private room/headset.",
+      "4. Conduct consultation; document history, advice, and safety-net instructions.",
+      "5. Prescribe/referral only when clinically appropriate; advise in-person review when needed.",
+      "6. Store records securely and avoid sharing sensitive data through unsecured channels.",
+      "---",
+      "RECORDS / EVIDENCE",
+      "- Telemedicine consent note.",
+      "- Clinical record entry.",
+      "- Messages sent (where stored securely).",
+      "---",
+      "MONITORING, AUDIT & REVIEW",
+      "- Quarterly audit of telemedicine records for consent and documentation.",
+    ] });
+    }
+
+
+
+
 
 
 for(const d of docs){

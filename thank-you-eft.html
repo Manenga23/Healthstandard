@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Order Submitted</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<main class="container">
+  <h1>Order submitted</h1>
+  <p>Thank you. Your EFT request has been recorded.</p>
+
+  <div class="card" style="padding:14px;">
+    <h2>Your payment reference</h2>
+    <p><b id="ref"></b></p>
+    <p>Use this exact reference on your EFT so we can match payment.</p>
+  </div>
+
+  <h2>EFT instructions (edit these later)</h2>
+  <p><b>Bank:</b> ____________________</p>
+  <p><b>Account name:</b> ____________________</p>
+  <p><b>Account number:</b> ____________________</p>
+  <p><b>Branch code:</b> ____________________</p>
+  <p><b>Reference:</b> <span id="ref2"></span></p>
+
+  <h2>Proof of payment</h2>
+  <p>Email proof of payment with your reference to: <b>____________________</b></p>
+
+  <h2>After payment</h2>
+  <p>Once payment is verified, we send your download link or generate the pack for you.</p>
+  <p style="margin-top:18px;"><a href="packs.html">Buy another pack</a></p>
+</main>
+
+<script>
+  // Netlify redirects here after POST; reference is not automatically shown.
+  // We read it from the referrer form submission by storing in sessionStorage before submit.
+  const ref = sessionStorage.getItem("last_reference") || "(reference not found)";
+  document.getElementById("ref").textContent = ref;
+  document.getElementById("ref2").textContent = ref;
+</script>
+</body>
+</html>

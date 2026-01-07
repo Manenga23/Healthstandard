@@ -25,3 +25,14 @@ form .row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
 .col6{grid-column:span 12}
 @media(min-width:900px){.col6{grid-column:span 6}.col4{grid-column:span 4}.col8{grid-column:span 8}}
 .notice{border-left:4px solid var(--ok);background:rgba(45,212,191,.08);padding:12px;border-radius:12px;color:var(--muted)}
+
+
+.container{max-width:860px;margin:0 auto;padding:18px;font-family:system-ui,Arial;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px;}
+.card{display:block;border:1px solid #ddd;border-radius:12px;padding:14px;text-decoration:none;color:inherit;background:#fff;}
+.card:hover{border-color:#bbb;}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #222;text-decoration:none;color:#222;}
+label{display:block;margin:10px 0;}
+input{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;}
+button{padding:10px 14px;border-radius:10px;border:1px solid #222;background:#fff;cursor:pointer;}
+button:hover{background:#f3f3f3;}

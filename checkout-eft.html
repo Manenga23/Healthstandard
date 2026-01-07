@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EFT Checkout</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<main class="container">
+  <h1>EFT Checkout</h1>
+  <p id="packLabel"></p>
+
+  <!-- Netlify Form capture (manual EFT flow). -->
+  <form id="orderForm" name="eft-orders" method="POST" data-netlify="true" action="thank-you-eft.html">
+    <input type="hidden" name="form-name" value="eft-orders" />
+    <input type="hidden" id="selected_pack" name="selected_pack" value="MASTER" />
+    <input type="hidden" id="reference" name="reference" value="" />
+
+    <h2>Buyer details</h2>
+    <label>Email (for delivery): <input required name="buyer_email" type="email" /></label>
+    <label>Phone (optional): <input name="buyer_phone" type="tel" /></label>
+
+    <h2>Practice details (fillable)</h2>
+    <label>Practice name: <input required name="practice_name" /></label>
+    <label>Practice number: <input name="practice_number" /></label>
+    <label>Responsible practitioner (name): <input required name="responsible_practitioner" /></label>
+    <label>HPCSA number: <input name="hpcsa_number" /></label>
+    <label>Physical address: <input name="physical_address" /></label>
+    <label>Postal address: <input name="postal_address" /></label>
+    <label>Contact number: <input name="contact_number" /></label>
+    <label>Operating hours: <input name="operating_hours" /></label>
+
+    <h2>Options</h2>
+    <label><input type="checkbox" name="is_dispensing" value="yes" /> Practice dispenses medicines</label><br/>
+    <label><input type="checkbox" name="has_staff" value="yes" /> Practice has staff</label><br/>
+    <label><input type="checkbox" name="is_schedule56" value="yes" /> Uses Schedule 5/6 medicines</label><br/>
+    <label><input type="checkbox" name="telemedicine" value="yes" /> Offers telemedicine</label><br/>
+
+    <h2>EFT payment</h2>
+    <p>Banking details will be shown on the next page with your unique payment reference.</p>
+    <button type="submit">Generate reference & submit order</button>
+  </form>
+
+  <p style="margin-top:18px;"><a href="packs.html">Back to packs</a></p>
+</main>
+
+<script>
+  const url = new URL(location.href);
+  const pack = (url.searchParams.get("pack") || "MASTER").toUpperCase();
+  document.getElementById("selected_pack").value = pack;
+  document.getElementById("packLabel").textContent = "Selected: " + pack;
+
+  document.getElementById("orderForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    // Get reference from function
+    const res = await fetch("/.netlify/functions/create-reference", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ selected_pack: pack })
+    });
+    const js = await res.json();
+    document.getElementById("reference").value = js.reference || "";
+    sessionStorage.setItem("last_reference", js.reference || "");
+    // Continue Netlify form submit
+    e.target.submit();
+  });
+</script>
+</body>
+</html>
