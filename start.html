@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Generate master pack</title>
+<link rel="stylesheet" href="/assets/style.css"/>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <div class="brand">OHSC Compliance Auto-Pack</div>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a href="/start.html" class="badge">Generate</a>
+    </div>
+  </div>
+  
+<h2>Generate Master Pack (Packs 1–5)</h2>
+<div class="card">
+  <p class="small">This generates a ZIP immediately using a Netlify Function. Do not enter patient-identifying information.</p>
+  <form id="instantForm">
+    <div class="row">
+      <div class="col6"><label>Practice name</label><input name="practice_name" required></div>
+      <div class="col6"><label>Practice number (BHF/Practice No)</label><input name="practice_number" required></div>
+      <div class="col6"><label>Physical address</label><textarea name="physical_address" rows="3" required></textarea></div>
+      <div class="col6"><label>Postal address</label><textarea name="postal_address" rows="3" required></textarea></div>
+      <div class="col6"><label>Contact number</label><input name="contact_number" required></div>
+      <div class="col6"><label>Practice email</label><input type="email" name="practice_email"></div>
+
+      <div class="col6"><label>Operating hours</label><input name="operating_hours" placeholder="Mon–Fri 09h00–16h00 | Sat 08h30–12h00 | Sun/Public Holidays: Closed" required></div>
+      <div class="col6"><label>After-hours info</label><input name="after_hours" placeholder="After-hours telemedicine via website using myCG" required></div>
+
+      <div class="col6"><label>Responsible practitioner</label><input name="practitioner_name" required></div>
+      <div class="col6"><label>HPCSA number</label><input name="hpcsa_number" required></div>
+      <div class="col6"><label>Qualification</label><input name="qualification" placeholder="e.g., MBChB"></div>
+      <div class="col6"><label>Scope of practice</label><input name="scope" placeholder="e.g., General Practitioner"></div>
+
+      <div class="col6"><label>Practice type</label>
+        <select name="practice_type" required>
+          <option>Consulting</option>
+          <option>Consulting & Dispensing</option>
+        </select>
+      </div>
+      <div class="col6"><label>Records</label>
+        <select name="records" required>
+          <option>Paper</option>
+          <option>Electronic</option>
+          <option>Electronic and Paper</option>
+        </select>
+      </div>
+
+      <div class="col6"><label>Schedule 5/6 handled?</label>
+        <select name="schedule_56" required>
+          <option>No</option>
+          <option>Yes</option>
+        </select>
+      </div>
+      <div class="col6"><label>Has staff?</label>
+        <select name="has_staff" required>
+          <option>No</option>
+          <option>Yes</option>
+        </select>
+      </div>
+
+      <div class="col6"><label>Building type</label>
+        <select name="building_type" required>
+          <option>Single-storey</option>
+          <option>Multi-storey</option>
+        </select>
+      </div>
+      <div class="col6"><label>Signature name (typed)</label><input name="signature_name" required></div>
+    </div>
+
+    <div class="btnRow">
+      <button id="btnGenerate" class="btn" type="submit">Generate master ZIP</button>
+      <a id="downloadLink" class="btn secondary" style="display:none" href="#">Download ZIP</a>
+    </div>
+    <div id="out" class="small" style="margin-top:10px"></div>
+  </form>
+</div>
+
+  <div class="footer"><div class="small">Disclaimer: Documentation support aligned to OHSC norms & standards. Final inspection outcomes are at the discretion of authorities.</div></div>
+</div>
+<script src="/assets/app.js"></script>
+</body>
+</html>

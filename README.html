@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Setup</title>
+<link rel="stylesheet" href="/assets/style.css"/>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <div class="brand">OHSC Compliance Auto-Pack</div>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a href="/start.html" class="badge">Generate</a>
+    </div>
+  </div>
+  
+<h2>Quick setup (GitHub + Netlify)</h2>
+<div class="card">
+  <ol class="small" style="line-height:1.8">
+    <li>Create a GitHub repo and upload this folder.</li>
+    <li>In Netlify: <b>New site from Git</b> → select repo.</li>
+    <li>Publish directory: <b>.</b> (root)</li>
+    <li>Functions directory: <b>netlify/functions</b> (auto via netlify.toml)</li>
+    <li>Deploy, then open <b>/start.html</b> to generate the master ZIP.</li>
+  </ol>
+</div>
+
+  <div class="footer"><div class="small">Disclaimer: Documentation support aligned to OHSC norms & standards. Final inspection outcomes are at the discretion of authorities.</div></div>
+</div>
+<script src="/assets/app.js"></script>
+</body>
+</html>

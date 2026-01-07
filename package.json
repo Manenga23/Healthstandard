@@ -1,0 +1,11 @@
+{
+  "name": "ohsc-masterpack-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Generic OHSC Packs 1-5 master ZIP generator for Netlify",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "pdfkit": "^0.16.0"
+  }
+}
